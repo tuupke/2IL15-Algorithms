@@ -1,0 +1,171 @@
+\documentclass{article}
+
+\usepackage{a4wide,amsmath,amssymb,fancyhdr,graphicx,tabularx,xspace, algorithmic,amsmath}
+
+\pagestyle{fancy}
+\chead{}
+\lhead{TU Eindhoven}
+\rhead{Algorithms (2IL15) --- Homework Exercises}
+\cfoot{\thepage}
+\lfoot{}
+\rfoot{}
+
+%to include IPE/pdf correctly
+\expandafter\ifx\csname pdfoptionalwaysusepdfpagebox\endcsname\relax\else
+\pdfoptionalwaysusepdfpagebox5
+\fi
+
+%comments command
+\newcommand{\complain}[1]{\begin{quotation} {\sf *** #1 ***} \end{quotation}}
+
+
+%
+% Macros
+%
+
+
+\newcommand{\Reals}{{\Bbb R}}
+\newcommand{\Nats}{{\Bbb N}}
+\newcommand{\Ints}{{\Bbb Z}}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}}
+\newcommand{\E}{\ensuremath{\mathcal{E}}}
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+
+\newcommand{\tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\node}{\nu}
+\newcommand{\lchild}{\mathrm{lc}}
+\newcommand{\rchild}{\mathrm{rc}}
+\newcommand{\size}{\mathit{size}}
+\newcommand{\leaf}{\mu}
+\newcommand{\mylist}{{\cal L}}
+\newcommand{\myroot}{\mathit{root}}
+\newcommand{\key}{\mathit{key}}
+\newcommand{\bd}{\partial}
+
+
+
+
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+\newcommand{\pr}[1]{\Pr[#1]}
+\DeclareMathOperator{\expectation}{E}
+\newcommand{\expt}[1]{\expectation[#1]}
+\newcommand{\events}[1]{\mbox{Events}(#1)}
+\newcommand{\rank}{\mathit{rank}}
+\newcommand{\result}{\mathit{result}}
+\newcommand{\piv}{\mathrm{piv}}
+\newcommand{\myexp}{\mathrm{exp}}
+\newcommand{\best}{\mathrm{best}}
+\newcommand{\worst}{\mathrm{worst}}
+\newcommand{\dest}{\mathit{dest}}
+\newcommand{\dist}{\mathit{distance}}
+\newcommand{\weight}{\mathit{weight}}
+\newcommand{\alg}{{\sc Alg}\xspace}
+
+\newcommand{\start}{\mathit{start}}
+\newcommand{\myend}{\mathit{end}}
+\newcommand{\free}{\mathit{free}}
+
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+%%
+% Theorem-Like Environments
+%
+\newtheorem{defin}{Definition}
+  \newenvironment{mydefinition}{\begin{defin} \sl}{\end{defin}}
+\newtheorem{theo}[defin]{Theorem}
+  \newenvironment{mytheorem}{\begin{theo} \sl}{\end{theo}}
+\newtheorem{lem}[defin]{Lemma}
+  \newenvironment{mylemma}{\begin{lem} \sl}{\end{lem}}
+\newtheorem{propo}[defin]{Proposition}
+  \newenvironment{myproposition}{\begin{propo} \sl}{\end{propo}}
+\newtheorem{coro}[defin]{Corollary}
+  \newenvironment{corollary}{\begin{coro} \sl}{\end{coro}}
+%\newtheorem{obse}[defin]{Observation}
+%  \newenvironment{observation}{\begin{obse} \sl}{\end{obse}}
+%\newtheorem{rem}[defin]{Remark}
+%  \newenvironment{remark}{\begin{rem} \rm}{\end{rem}}
+
+
+\newenvironment{myproof}{\emph{Proof.}}{\hfill $\Box$ \medskip\\}
+
+\newcounter{rcounter}
+\newenvironment{rlist}%
+{\begin{list}{A.1-\arabic{rcounter}}{\usecounter{rcounter}}}{\end{list}}
+\newcounter{rcountermem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{}
+\author{Mart Pluijmaekers}
+\date{19-11-2012}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\section*{Algorithms (2IL15): Homework Set A}
+
+\subsection*{NP-hardness}
+\begin{itemize}
+\item[1.]
+\begin{itemize}
+\item[(i)] No since we know that \emph{Alg} runs in polynomial time and since $P\in NP$ we know that the statement is false.
+
+\item[(ii)]
+
+\item[(iii)]
+
+\end{itemize}
+
+
+\item[2.]
+
+\item[3.]
+\begin{itemize}
+\item[(i)]
+
+\item[(ii)]
+
+\end{itemize}
+
+\end{itemize}
+
+\subsection*{Approximation algorithms}
+\begin{itemize}
+\item[1.]
+
+\item[2.]
+
+\end{itemize}
+
+\subsection*{Linear programming}
+\begin{itemize}
+\item[1.]
+
+\item[2.]
+\begin{itemize}
+\item[(i)]
+
+\item[(ii)]
+
+\end{itemize}
+
+\item[3.]
+
+\end{itemize}
+
+\end{document} 

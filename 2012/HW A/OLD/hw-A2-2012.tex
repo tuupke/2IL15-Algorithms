@@ -1,0 +1,309 @@
+\documentclass{article}
+
+\usepackage{a4wide,amsmath,amssymb,fancyhdr,graphicx,tabularx,xspace,algorithmic}
+
+\pagestyle{fancy}
+\chead{}
+\lhead{TU Eindhoven}
+\rhead{Algorithms (2IL15) --- Homework Exercises}
+\cfoot{\thepage}
+\lfoot{}
+\rfoot{}
+
+%to include IPE/pdf correctly
+\expandafter\ifx\csname pdfoptionalwaysusepdfpagebox\endcsname\relax\else
+\pdfoptionalwaysusepdfpagebox5
+\fi
+
+%comments command
+\newcommand{\complain}[1]{\begin{quotation} {\sf *** #1 ***} \end{quotation}}
+
+
+%
+% Macros
+%
+
+
+\newcommand{\Reals}{{\Bbb R}}
+\newcommand{\Nats}{{\Bbb N}}
+\newcommand{\Ints}{{\Bbb Z}}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}}
+\newcommand{\E}{\ensuremath{\mathcal{E}}}
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+
+\newcommand{\tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\node}{\nu}
+\newcommand{\lchild}{\mathrm{lc}}
+\newcommand{\rchild}{\mathrm{rc}}
+\newcommand{\size}{\mathit{size}}
+\newcommand{\cost}{\mathit{cost}}
+\newcommand{\leaf}{\mu}
+\newcommand{\mylist}{{\cal L}}
+\newcommand{\myroot}{\mathit{root}}
+\newcommand{\key}{\mathit{key}}
+\newcommand{\bd}{\partial}
+
+
+
+
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+\newcommand{\pr}[1]{\Pr[#1]}
+\DeclareMathOperator{\expectation}{E}
+\newcommand{\expt}[1]{\expectation[#1]}
+\newcommand{\events}[1]{\mbox{Events}(#1)}
+\newcommand{\rank}{\mathit{rank}}
+\newcommand{\result}{\mathit{result}}
+\newcommand{\piv}{\mathrm{piv}}
+\newcommand{\myexp}{\mathrm{exp}}
+\newcommand{\best}{\mathrm{best}}
+\newcommand{\worst}{\mathrm{worst}}
+\newcommand{\dest}{\mathit{dest}}
+\newcommand{\dist}{\mathit{distance}}
+\newcommand{\weight}{\mathit{weight}}
+\newcommand{\alg}{{\sc Alg}\xspace}
+\newcommand{\myleft}{\mathit{left}}
+\newcommand{\myright}{\mathit{right}}
+
+\newcommand{\start}{\mathit{start}}
+\newcommand{\myend}{\mathit{end}}
+\newcommand{\free}{\mathit{free}}
+
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+%%
+% Theorem-Like Environments
+%
+\newtheorem{defin}{Definition}
+  \newenvironment{mydefinition}{\begin{defin} \sl}{\end{defin}}
+\newtheorem{theo}[defin]{Theorem}
+  \newenvironment{mytheorem}{\begin{theo} \sl}{\end{theo}}
+\newtheorem{lem}[defin]{Lemma}
+  \newenvironment{mylemma}{\begin{lem} \sl}{\end{lem}}
+\newtheorem{propo}[defin]{Proposition}
+  \newenvironment{myproposition}{\begin{propo} \sl}{\end{propo}}
+\newtheorem{coro}[defin]{Corollary}
+  \newenvironment{corollary}{\begin{coro} \sl}{\end{coro}}
+%\newtheorem{obse}[defin]{Observation}
+%  \newenvironment{observation}{\begin{obse} \sl}{\end{obse}}
+%\newtheorem{rem}[defin]{Remark}
+%  \newenvironment{remark}{\begin{rem} \rm}{\end{rem}}
+
+\newenvironment{myproof}{\emph{Proof.}}{\hfill $\Box$ \medskip\\}
+
+% list environments with less spacing
+\newcommand{\BeginMyItemize}{\begin{itemize}\setlength{\itemsep}{-\parskip}}
+\newcommand{\EndMyItemize}{\end{itemize}}
+\newcommand{\myitemize}[1]{\BeginMyItemize #1 \EndMyItemize}
+
+\newcounter{rcounter}
+\newenvironment{rlist}%
+{\begin{list}{A.2-\arabic{rcounter}}{\usecounter{rcounter}}}{\end{list}}
+\newcounter{rcountermem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Algorithms (2IL15): Homework Set A.2}
+\author{Mart Pluijmaekers, 0753117}
+\date{9-5-2012}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\section*{Algorithms (2IL15): Homework Set A.2}
+
+\subsection*{Exercises for Lecture 3}
+\begin{rlist}
+\item Answers:
+\begin{enumerate}
+      \item[(i)] I would use the greedy choice since the excercise states that the algorithm is correct and a correct greedy algorithm is always quicker then a dynamic programming algorithm.
+      \item[(ii)] This is not correct, this can be shown by the following counterexample.\\ Let A be a $2*2$ matrix, B be a $2*10$ matrix and C be a $10*3$ matrix. Then there are 2 possibilities for calculating the total multiplication, namely: $(A*B)*C$ or $A*(B*C)$. \\ Since the initial cost of the first multiplication for the first option would a cost of $2*2*10=40$ and the first multiplication for the second choice would be $2*10*3=60$. So the greedy choice would go for the first choice, but when the second step is calculated the minimal cost picture changes. The first option would become $2*2*10+2*10*3=100$ while the cost for the second option would become $2*10*2+2*2*3=72$. Since the choice of the greedy algorithm was incorrect it shows that the greedy algorithm does not always give the most optimal solution.
+      \end{enumerate}
+
+\item ($\frac{1}{2}+1+1+\frac{1}{2}+1$ points)
+      
+      \begin{enumerate}
+      \item[(i)] Given $i,j$ with $1\leq i \le j \leq n$ compute a cluster tree with minimal cost for $[x_i ... x_j]$.
+$m[i,j]=$minimal cost to compute a cluster tree for $[x_i ... x_j]$.
+      \item[(ii)] \[
+m[i,j]=
+\begin{cases}
+0, &\text{if $i=j$;}\\
+min_{i\leq k\textless j} \{m[i,k]+m[k+1,j] +X_{i,j}, &\text{if $i<j$;} 
+\end{cases}
+\]
+
+Proof:\\
+If $i=j$ trivial case.
+
+For the other case we consider a optimal solution OPT for computing a clustertree on $\{x_i,..,x_k\}$ and let j be the index such that OPT is of the form: $\{x_i,..,x_j\} \cup {x_j,..,x_k}$. Then we can state that m[$i,k$]=the cost in OPT for $\{x_i,..,x_j\} + $ the cost in OPT for $\{x_{j+1},..,x_k\} +$ cost$(X_{i,k}) \ge m[i,j]+m[j+1,k]+\text{cost}(X_{i,k}) \ge \text{min}_{i\le l < k}(m[i,l]+m[l+1,k]+\text{cost}(X_{i,k})$ such that $m[i,k]\le \text{min}_{i\le l < k}(m[i,l]+m[l+1,k]+\text{cost}(X_{i,k}))$.
+      \item[(iii)]
+
+\begin{algorithmic}[1]
+\STATE{CalcCost(Cost}
+\FOR{$i\gets 1 \text{to} n$}
+\STATE c[$i,i] \gets 0$
+\ENDFOR
+\FOR{$i\gets n-1 to 1$}
+\FOR{$j\gets i+1 to n $}
+\STATE{$c[i,j] \gets \text{min}_{i\le k<j}(c[i,k],c[k+1,j)+\text{Cost}[i,j]$}
+\ENDFOR
+\ENDFOR
+\RETURN{c[1,n]}
+\end{algorithmic}
+
+
+
+      \item[(iv)] The first loop is a single loop so it takes $O(n)$, lines 5, 6, 8 and 9 define 2 nested loops so this part takes $O(n^2)$ but since line 7 is actually a loop itself which iterates over n the actual running time is $O(n^3)$
+      \item[(v)] 
+\begin{algorithmic}[1]
+\STATE{CalcCostExt(Cost}
+\FOR{$i\gets 1 \text{to} n$}
+\STATE c[$i,i] \gets 0$
+\ENDFOR
+\FOR{$i\gets n-1 to 1$}
+\FOR{$j\gets i+1 to n $}
+\STATE{$c[i,j]\gets \infty$}
+\FOR{$k \gets i to j-1$}
+\STATE{$c \gets\text{min}_{i\le k<j}(c[i,k],c[k+1,j)+\text{Cost}[i,j]$}
+\IF{$c < c[i,j]$}
+\STATE{$c[i,j] \gets c$}
+\STATE{tree$[i,j] \gets k$}
+\ENDIF
+\ENDFOR
+\ENDFOR
+\ENDFOR
+\RETURN{c[1,n]}
+\end{algorithmic}
+\bigskip
+\begin{algorithmic}[1]
+\STATE{PrintClTree(i,j)}
+\IF{i=j}
+\RETURN{$x_i$}
+\ELSE
+\RETURN{X$_{ij}$ with left child PrintClTree($i$,tree[$i,j])$ and right child PrintClTree(s[i,j]+1,j)}
+\ENDIF
+\end{algorithmic}
+      \end{enumerate}
+\setcounter{rcountermem}{\value{rcounter}}
+\end{rlist}
+\subsection*{Exercises for Lecture 4}
+\begin{rlist}
+\setcounter{rcounter}{\value{rcountermem}}
+\item ($\frac{1}{2}+1+\frac{1}{2}$ points) 
+      \begin{enumerate}
+      \item[(i)] 
+Given $i,j$ with $0\leq i \leq n+1$ compute a set of petrol stations with minimal waiting time for $[x_i ... x_{n+1}]$. \\
+$m[i,j]=$minimal waiting time on petrol stations to travel  for $[x_i ... x_{n+1}]$.
+      \item[(ii)] \[
+m[i]=
+\begin{cases}
+0, &\text{if $i \ge n$;}\\
+min_{i\leq k\textless n+1} (m[k]+t[k]), &\text{if $i < n$;} 
+\end{cases}
+\]
+
+Proof: \\
+For $i\ge n$ is trivial. \\
+
+For the other case we consider an optimal solution OPT for finding a solution on $<s_i,..,s_{n+1}>$ and let j be the index so OPT has the form $<s_j,..,s_{n+1}>$. Then $m[i]=$ cost in OPT for $< s_j,..,s_{n+1} >+ t(j) \ge m[j]+t(j) \ge \text{min}_{i\le l \le n+1}(m[l]+t(l))$ \\
+
+For $i\le l \le n+1$ there is a solution of $m[l] + t(l)$ such that $m[i] \le \text(min)_{i \le l \le n+1}(m[l]+t(l))$.
+      \item[(iii)] 
+\begin{algorithmic}[1]
+\STATE{CalcWaitTime(T)}
+\FOR{$i \gets 1 to n$}
+\STATE{m[i,i]$\gets 0$}
+\ENDFOR
+\FOR{$i \gets n-1 to 1$}
+\STATE{m$[i] \gets $min$_{i\le k \le n+1}($m[$k$],T($k$))}
+\ENDFOR
+\RETURN{m[1]}
+\end{algorithmic}
+
+      \end{enumerate}
+\item ($\frac{1}{2}+1+\frac{1}{2}+\frac{1}{2}+\frac{1}{2}$ point)
+      Let $P=\langle p_1,\ldots,p_n \rangle$ be a sequence of $n$ points in the plane.
+      No two points have the same $x$-coordinate, and the points are given from left to right.
+      Any subsequence $P'$ of $P$ defines a path, which is given by visiting the points
+      from $P'$ in order (that is, from left to right). The cost of this path, $\cost(P')$,
+      is its total length. For example, if $P' = \langle p_2, p_4, p_5, p_8\rangle$ then
+      $\cost(P') = |p_2p_4| + |p_4p_5| + |p_5p_8|$, where $|p_ip_j|$ denotes the
+      length of the segment $p_ip_j$. We want to partition $P$ into two subsets $P_1$, $P_2$
+      such that $\cost(P_1)+\cost(P_2)$ is minimized.
+      \begin{enumerate}
+      \item[(i)]
+
+Given $i,j$ with $1 \le i < j \le n$ compute a partition for $[p_i,...,p_n]$ with minimal cost(P$_1$) + cost(P$_2$) where P$_1$ starts it’s curve at p$_i$ and P$_2$ start it’s curve at p$_j$.
+
+      \item[(ii)] 
+First we define the cost of a path, pCost(i,j)=$\sum_{k=i}^{j-1}|p_kp_{k+1}|$
+\[
+m[i]=
+\begin{cases}
+0, & $\text{if $i \ge n-1\wedge  j=n$;}$\\
+min_{i < l \le n}(min_{l<k\le n}(m[l,k]+pCost(i,l-1)+|p_{l-1}p_k|)), & $\text{otherwise;}$
+\end{cases}
+\]
+Proof:
+
+If $i \ge n \wedge j=n$, this is a trivial case.
+
+For the other case we consider a optimal solution OPT as a partition for [$p_1,..,p_n$] where cost($P_1$)+cost($P_2$) is minimized and let g be the index such that OPT is of the following form: [$p_g,..,p_n$].\\ Then $m[i,j]=$cost$(P_1)+$cost$(P_2)$ (for OPT) is greater or equal to $m[i,g]+$pCost$(i,g))$ is greater equal to $min_{i<l\le n}(min_{l<k\le n}(m[l,k]+pCost(i,l-1)+|p_{l-1}p_k|)))$\\
+
+For any $i\le k < n $ we get that there is a solution: $m[l,k]+\text{pCost}(i,l-1)+|p_{l-1}p_k|$ such that there is an l so the following holds: $m[i,j]\le min_{i<l\le n}(min_{l<k\le n}(m[l,k]+pCost(i,l-1)+|p_{l-1}p_k))$.
+
+
+
+      \item[(iii)] 
+First lets compute the pCost
+\begin{algorithmic}[1]
+\STATE CalcPCost(i,j)
+\FOR{$j \gets 1\text{ to }n$}
+\STATE{pCost[$i,i+1]\gets |p_ip_{i+1}|$}
+\FOR{$d \gets i + 2$}
+\STATE{pCost[$i,j] \gets$ pCost[$i,j-1]+|p_{d-1}p_d|$}
+\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\bigskip
+
+\begin{algorithmic}[1]
+\STATE{CalcPartition(P)}
+\STATE{CalcPCost(i,j)}
+\STATE{m[$n,n]\gets 0$}
+\STATE{m[$n-1,n]\gets 0$}
+\FOR{$j\gets n-1 \text{ to } 1$}
+\FOR{$d \gets j+1 \text{ to } n$}
+\STATE{m[$j,d]\gets$min$_{j<l\le n}($min$_{l<k\le n}($m[$l,k$]+pathCost[$i,l-1$]+$|p_{l-1}p_k|$))}
+\ENDFOR
+\ENDFOR
+\RETURN{min$_{2\le g \le n}(m[1,g]$)}
+\end{algorithmic}
+
+
+      \item[(iv)] 
+First lets start with CalcPCost, since we have 2 nested loops over $n$ while the rest of the function has contstant running time we get a total running time of $O(n^2)$.
+
+CalcPartition on the other hand has 2 nested loops as well, but line 7 does not have constant running time. But since j is the determining value (because of $j<l\le k\le n$) this actually runs for $O(n)$ time.
+Since line 7 runs in the 2 nested loops the actual running time is $O(n^3)$. Line 10 also is actually a loop - which runs for $O(n-2)$ - but since $O(n^3)>O(n-2)$ the running time of the algorithm is $O(n^3)$.
+      \item[(v)] Extend the algorithm so that it not only computes the value of an optimal
+                 partition, but the partition itself.
+      \end{enumerate}
+\end{rlist}
+
+\end{document} 

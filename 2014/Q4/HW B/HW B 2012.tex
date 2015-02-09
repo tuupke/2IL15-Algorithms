@@ -1,0 +1,263 @@
+\documentclass{article}
+
+\usepackage{a4wide,amsmath,amssymb,fancyhdr,graphicx,tabularx,xspace, algorithmic,amsmath,color,dsfont}
+
+\pagestyle{fancy}
+\chead{}
+\lhead{TU Eindhoven}
+\rhead{Algorithms (2IL15) --- Homework Exercises}
+\cfoot{\thepage}
+\lfoot{}
+\rfoot{}
+
+%to include IPE/pdf correctly
+\expandafter\ifx\csname pdfoptionalwaysusepdfpagebox\endcsname\relax\else
+\pdfoptionalwaysusepdfpagebox5
+\fi
+
+%comments command
+\newcommand{\complain}[1]{\begin{quotation} {\sf *** #1 ***} \end{quotation}}
+
+
+%
+% Macros
+%
+
+
+\newcommand{\Reals}{{\Bbb R}}
+\newcommand{\Nats}{{\Bbb N}}
+\newcommand{\Ints}{{\Bbb Z}}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}}
+\newcommand{\E}{\ensuremath{\mathcal{E}}}
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+
+\newcommand{\tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\node}{\nu}
+\newcommand{\lchild}{\mathrm{lc}}
+\newcommand{\rchild}{\mathrm{rc}}
+\newcommand{\size}{\mathit{size}}
+\newcommand{\leaf}{\mu}
+\newcommand{\mylist}{{\cal L}}
+\newcommand{\myroot}{\mathit{root}}
+\newcommand{\key}{\mathit{key}}
+\newcommand{\bd}{\partial}
+
+
+
+
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+\newcommand{\pr}[1]{\Pr[#1]}
+\DeclareMathOperator{\expectation}{E}
+\newcommand{\expt}[1]{\expectation[#1]}
+\newcommand{\events}[1]{\mbox{Events}(#1)}
+\newcommand{\rank}{\mathit{rank}}
+\newcommand{\result}{\mathit{result}}
+\newcommand{\piv}{\mathrm{piv}}
+\newcommand{\myexp}{\mathrm{exp}}
+\newcommand{\best}{\mathrm{best}}
+\newcommand{\worst}{\mathrm{worst}}
+\newcommand{\dest}{\mathit{dest}}
+\newcommand{\dist}{\mathit{distance}}
+\newcommand{\weight}{\mathit{weight}}
+\newcommand{\alg}{{\sc Alg}\xspace}
+
+\newcommand{\start}{\mathit{start}}
+\newcommand{\myend}{\mathit{end}}
+\newcommand{\free}{\mathit{free}}
+
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+%%
+% Theorem-Like Environments
+%
+\newtheorem{defin}{Definition}
+  \newenvironment{mydefinition}{\begin{defin} \sl}{\end{defin}}
+\newtheorem{theo}[defin]{Theorem}
+  \newenvironment{mytheorem}{\begin{theo} \sl}{\end{theo}}
+\newtheorem{lem}[defin]{Lemma}
+  \newenvironment{mylemma}{\begin{lem} \sl}{\end{lem}}
+\newtheorem{propo}[defin]{Proposition}
+  \newenvironment{myproposition}{\begin{propo} \sl}{\end{propo}}
+\newtheorem{coro}[defin]{Corollary}
+  \newenvironment{corollary}{\begin{coro} \sl}{\end{coro}}
+%\newtheorem{obse}[defin]{Observation}
+%  \newenvironment{observation}{\begin{obse} \sl}{\end{obse}}
+%\newtheorem{rem}[defin]{Remark}
+%  \newenvironment{remark}{\begin{rem} \rm}{\end{rem}}
+
+
+\newenvironment{myproof}{\emph{Proof.}}{\hfill $\Box$ \medskip\\}
+
+\newcommand{\blb}{]}
+\newcounter{rcounter}
+\newenvironment{rlist}%
+{\begin{list}{A.1-\arabic{rcounter}}{\usecounter{rcounter}}}{\end{list}}
+\newcounter{rcountermem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{}
+\author{Mart Pluijmaekers, 0753117}
+\date{27-5-2012}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+\section*{Algorithms (2IL15): Homework Set B}
+
+\subsection*{Single-source shortest paths}
+\begin{itemize}
+\item[1.] 
+\begin{itemize}
+\item[(i)] Since we want to be finished after the first round, we have to make sure that we relax each edge ``in-order''. This means that they have to be relaxed starting from the root and working it's way down into the leafs. This has to be done because we need to make sure that the distances ($\delta,d$) are updated immediately, because of the way that \emph{Relax($u,v$)} works this has to be done from the root downto the leafs. In order to do this we can use for example \emph{Breadth-First-Search}, because when starting at the root this gives an in order relaxation of all the edges. Note that \emph{Depth-First-Search} works too, since when using this order it still has all information available in order to relax each vertex. The whole principle works because of the fact that $d(v)\ne \infty$ when vertex $v$ is handled.
+
+\item[(ii)] In order to have $k-1$ rounds we need to have a sort of inverse to \emph{BFS} and \emph{DFS}. \emph{Bottom-up} is one of those methods. Relaxing all edges \emph{bottom-up} makes sure that because of the way \emph{Relax($u,v$)} works, after the first round of relaxtions only the distance to the children of the root is known (first level). After the second round the second level and so on. Because we have $k$ levels and thus $k-1$ edges between a leaf and the root we have that it takes $k-1$ rounds of relaxations before all distances are calculated. 
+\end{itemize}
+
+\item[2.] 
+\begin{itemize}
+\item[(i)] In order to modify \emph{Dijkstra} to stop after finding the point we need is to make sure that it has computed everything we need. Since \emph{Dijkstra} consists of computing distances starting from the point which currently has the least distance, we know that when the algorithm selects our ending vertex as the vertex with minimal distance that it's distance cannot be decreased so we can stop. This means that in order to modify \emph{Dijkstra} it suffices to add a check after line 5 (which selects the point with the minimal distance) which has to check whether $u$ is equal to $t$ and if so, return $d(u)$.
+
+\item[(ii)] Let $G=(V,E)$ be a graph such that our modified version of \emph{Dijkstra} still has to relax all edges in order to find $\delta(s,t)$. The graph will look as follows. It is a directed graph consisting of a single strand of vertices with edges leading from $s$ through all other vertices to $t$. Furthermore for every node in the strand there are edges leading back towards all vertices in the strand before the node itself except for the endnode, below is an example of the graph for 4 vertices. The number of edges is then: $\sum_{n=1}^{|V|-1}n=\frac{1}{2}*(V-1)*V =\frac{1}{2}V^2-\frac{1}{2}V$. Since this is always the case, this is the upper and the lower bound and is in the order of $\Theta(|V|^2)$ edges. Please not that the edge weights do not matter since \emph{Dijkstra} computes all edges of a vertex before proceeding to the next vertex.
+
+\centerline{\includegraphics[scale=0.8]{sssp_ding}}
+\end{itemize}
+
+\item[3.] 
+\begin{itemize}
+\item[(i)] This computes the minimal distance for every point in $G$ to either $s$ or $t$. this means that $d(v)=min\{\delta(s,v),\delta(t,v)\}$ assuming $v$ is reachable from both $s$ and $t$. But since the graph is directed the effect is a bit different. 
+
+\item[(ii)] \textbf{Invariant:} At start of each iteration of while-loop: $d(v) = min\{\delta(s,v),\delta(t,v)\}$ for all v in S.
+
+\textbf{Initialization:} Initially $S\gets \emptyset$, so Invariant holds before first iteration.
+
+\textbf{Maintenance:} Must prove $d(v) = min\{\delta(s,v),\delta(t,v)\}$ for selected vertex $v$. Take the first unhandeled vertex $v_i$ on the shortest path to $u$ and select it's neightbour on the shortest path which has been handeled, $v_j$. Then we have $d(v_j)=min\{\delta(s,v_j),\delta(t,v_j)\}$, because we now the edge $(v_j,v_i)$ is relaxed we know that $d(v_i)=min\{\delta(s,v_i),\delta(t,v_i)\}$. This is because $v_j$ is on the shortest path we know that the first vertex selected after $v_j$ is handeled will als be on the shortest path because of the min-priority queue. Then we have 2 distinct cases, $v_j=v$ and $v_j\ne v$
+
+\begin{itemize}
+\item[$v_j=v$] Then we are done.
+
+\item[$v_j\ne v$] From $d(v) \le d(v_i) = min\{\delta(s,v_i),\delta(t,v_i)\} \le min\{\delta(s,v),\delta(t,v)\}$ and $d(v)\ge min\{\delta(s,v),\delta(t,v)\}$ (by property of Relax) follows that $d(v)=min\{\delta(s,v),\delta(t,v)\}$.
+\end{itemize}
+
+
+\end{itemize}
+\end{itemize}
+
+\subsection*{All-pairs shortest paths}
+\begin{itemize}
+\item[1.] No this does not yield a correct solution since when taking a look at the example. We can see that we do not have a negative edge weight cycle in either graph. If we look at the left graph we can see that the shortests path from $s$ to $e$ is over the top side, but after transforming the graph as stated in the exercise we can see that all of a sudden the edge directely between $s$ and $e$ is taken, which is not the shortest path in the original graph, thus the proposal does not yield a valid solution.
+
+\includegraphics[scale=0.6]{apsp1}
+
+\item[2.]
+Bounded-Length-Negative-Cycle($G,k$) 
+\begin{algorithmic}[1]
+\FOR{$i \gets 1$ to $n$}
+	\FOR{$j \gets 1$ to $n$}
+		\STATE{$L[i,j,0] \gets \infty $}
+	\ENDFOR
+\ENDFOR
+\FOR{$j \gets 1$ to $n$}
+	\STATE{$L[j,j,0] \gets 0$}
+\ENDFOR
+\FOR{$m \gets 1$ to $k$}
+	\FOR{$j \gets 1$ to $n$}
+		\FOR{$h \gets 1$ to $n$}
+			\STATE{$L[j,h,m] \gets min_{1\le i \le n}\{L[j,i,m-1]+w(v_i,v_h)\}$}
+		\ENDFOR
+	\ENDFOR
+\ENDFOR
+\FOR{$j \gets 1$ to $k$}
+	\FOR{$h \gets 1$ to $n$}
+		\IF{$L[h,h,j] < 0$}
+			\RETURN{\TRUE}
+		\ENDIF
+	\ENDFOR
+\ENDFOR
+\RETURN{\FALSE}
+\end{algorithmic}
+
+\textbf{Running-time analysis}
+For the running time analysis we can see that the algorithm has lots of (nested loops). Lines $1-5$ depict 2 loops which are nested, lines $6-8$ depict a single loop, lines $9-15$ depict 4 loops (line 12 acutually also is a (hidden) loop) and also lines $16-22$ depict 2 loops which are nested. Luckily we also have some assignmens, if statements or return values which will only take constant time. These are lines: $3,7, 18-20$ and $23$. We will now analyse all 4 parts of the algorithm depicting the (nested) loops for their running times.
+
+\begin{itemize}
+\item[Lines 1-5] These lines depict 2 nested for loops, each run from 1 to $n$ the amount of computing done is in the order of $\sum_{i=1}^n{\sum_{j=1}^n{O(1)}}=\sum_{i=1}^n{O(n)}=O(n^2)$.
+
+\item[Lines 6-8] These lines depict a single for loop with an assignment in it's body so the computing done is in the order of $\sum_{j=1}^n{O(1)}=O(n)$.
+
+\item[Lines 9-15] These lines depict 4 for loops, on first glance it looks like it just depicts 3, but when taking a closer look at line 12 we can see that this is not simply an assignment, but since a minumum is selected it becomes clear that this too should be implemented as a loop. The inner loops all run to $n$, but the outermost loop does not run to $n$, but to $k$, this makes the running time of this block in the order of $\sum_{m=1}^k{\sum_{i=1}^n{\sum_{h=1}^n{\sum_{j=1}^n{O(1)}}}}= \sum_{m=1}^k{\sum_{i=1}^n{\sum_{h=1}^n{O(n)}}}=\sum_{m=1}^k{\sum_{i=1}^n{O(n^2)}}= \sum_{m=1}^k{O(n^3)}=O(k*n^3)$.
+
+\item[Lines 16-22] For these lines we can see that the body is an if statement which ofcourse takes in the order of $O(1)$ time to compute. For the rest depict these lines 2 nested for loops with a computing time in the order of $\sum_{j=1}^k{\sum_{h=1}^n{O(1)}}=\sum_{j=1}^k{O(n)}=O(nk)$.
+\end{itemize}
+
+Now that we know what the order of running times of each of the 4 parts is we can clearly see that the 3 part (lines $9-15$) has the asymptotically highest running time and will thus ``dwarf'' the rest in computing time needed, therefor the algorithm will have a total running time in the order of $O(k*n^3)$ as required by the exercise. \\
+
+\textbf{Correctness:} We are only interested in the fact whether or not there exist negative edge-weight cycles in $G$ of at most $k$ edges. If we look at the algorithm which is based on the \emph{Slow-All-Pairs-Shortest-Paths} algorithm of lecture 6 (slide 11). The subproblem solved by this algorthm is the following: ``For each pair $v_i,v_k$ compute shortest path from $v_i$ to $v_k$ with at most $m$ edges.'' Since we are only interested in the negative edge-weight cycles of atmost $k$ edges we can trivially see that we do not have to compute everything which this algorithm computes. Because this algorithm computes lengths for every part of length 1 to $n-1$. Since we are only interested in the lesser then $k$ part, we can limit this outermost for loop, such that only the paths usefull to us are used. \\
+
+The \emph{Slow-All-Pairs-Shortest-Paths} basically computes for a point $v_i$ the distances to every other point, using a pathlength which is always at most $n-1$. Since we are only interested in cycles of length $k$ we do not need to look further then this ``radius''. The only thing left do to after the algorithm has finished computing is looking if there exist negative edge weight cycles. The last part does this, since it checks for every point $v_i$, whether there exists a path of atmost $k$ edges between $v_i$ and $v_i$ which has a negative weight.
+
+\end{itemize}	
+
+\subsection*{Max-Flow}
+\begin{itemize}
+\item[1.]
+\begin{itemize}
+\item[(i)] If we look at the graph in the picture we can clearly see that there exists a augmenting path (the edges depicing the augmenting path are colored red). Furthermore we can see that the total flow is: $4+3+1-1=7$.
+
+\includegraphics[scale=0.45]{flow1i}
+
+\item[(ii)] The maximum flow for this graph is equal to 9, we can see this by looking at (a) minimal cut of the graph and looking at the capacities of the edges ``sliced'' by this cut. For this minimal cut we need to devide all vertices into 2 subsets, $S,T$. Let $T=\{t\}$ ($T$, only contains the sink) and $S=V\setminus T$ Then the edges ``sliced'' by the cut are: $(x,t)\text{ and }(y,t)$ the capacities of both these edges added together are: $c(x,y)+c(y,t)=3+6=9$. In the example below we show this maximum flow.
+
+\centerline{\includegraphics[scale=0.55]{flow1ii}}
+\end{itemize}
+
+\item[2.] 
+\begin{itemize}
+\item[(i)] This does not hold, it is possible that when every edge has even capacity and G is in maximum flow that there are edges with odd flow. Like in the example, it is trivially seen that the max flow is equal to 2 while there are edges with an odd flow.
+
+\includegraphics[scale=0.6]{flow2i}
+
+\item[(ii)] Proof by contradiction. Let $G=(V,E)$ be a flow network with source $s$ and sink $t$. Suppose that all capacities in the network are even and there does not exist a maximum flow in $G$ such that the flow along each edge is even. Firstly we can clearly see that the maximum flow of the graph is even, since every minimal cut of $G$ will cut $j$ edges, with even capacity and since multiplying an even number with any other number yields an even number we know that the maximum flow has to be even. Since we know the maximum flow is even and there exist edges with uneven flow over them, we also know that the number of paths with odd flow has to be even. We then also know that there has to exist a path of edges with uneven flow with a pathlength of atleast 1 edge. Since we know that at some point capacities were even before being split, we also know that when a path with odd flow is found, another one has to exist with the same starting vertex, since when an even flow is split into 2 flows, where one of wich is odd we know the other one has to be odd too. Let $<v_i,...v_j>$ and $v_i,..,v_k$ are 2 paths of pathlength greater equal 1 where every edge has an odd flow, furthermore $G$ is in max flow. Note that $v_j$ and $v_k$ can be the same vertex. Since we know that the flow over these paths is odd but the capacities are even we know that we have capacity left. We can thus relax one path (lower the flow by 1) and add this flow to the other path making the flows over both paths even. It could go wrong if there exists a vertex $v_m$ which receives 2 incoming flows from paths with different starting points and has an outgoing flow which is maxed out. But since the starting point is different one of the incoming flows can be lowered while the other gets augmented, since this has to happen in pairs the total flow will not change and no flow will exceed the capacity. Repeat the pattern (change every pair of paths as described) and we will transform the graph into one with only even flows. This is in contradiction with the assumption that for every flow network there does not exist a maximum flow for which the flow over every edge is even. This we know that these do exist.
+\end{itemize}
+
+\item[3.]
+\begin{itemize}
+\item[(i)] Proof by contradiction. Let $G=(V,E)$ be a bipartite graph with partitions $L,R$ and $|L|\ne |R|$. Furthermore, every vertex in $V$ has exactely 5 incident edges. Since we know that every vertex has exactely 5 incident edges, it means that there are exactely $|V|*5$ edges. Because of the fact that in a bipartite graph every edge must connect to a vertex of the partition $L$ and a vertex of partition $R$. Because of this fact and that everything vertex has exactely 5 incident edges we know that $|L|=|E|/2/5=|V|*5/2/5=|V|/2$. Since exactely $|V|/2$ elements are in $L$, $V/2$ elements are also in $R$, so $|L|=|R|$. This is in contradiction with the assumption that $|L| \ne |R|$ so we know that $|L|=|R|$.
+
+\item[(ii)] In order to find the maximum bipartite matching we first have to transform graph $G$ into a flow network $G'$. We keep the same vertices and edges from graph $G$, furthermore we add 2 more vertices, one representing the source and one representing the sink of the flow network. Also we add vertices from the source to every vertex of $L$ and edges from every element in $R$ to the sink. Since flow networks have capacities we need to assign these to every edge, we choose a capacity of 1 for every edge. \\
+
+We can see that the maximum flow value is equal to $|L|$ since every vertex in $L$ is connected to exactely 5 vertices in $R$ we know that every vertex in $R$ is ``shared'' between 5 vertices in $L$. Since this holds for every vertex in $L$ (and also $R$) we can see that we can make a flow network in wich every vertex in $L$ is connected to a single vertex in $R$ and that no other vertex in $L$ is connected to this vertex (symmetric case for $R$). Because of this it is trivially seen that the maximum flow in $G*$ is equal to $L$. \\
+
+Because of this fact and the fact that every edge has a capacity of 1 we know that every vertex in $L$ is matched to exactely one vertex in $R$ and that this relationship is unique, thus the matching is maximal, because of it was not maximal it would mean that there exist 2 more vertices (one in each partition) with an edge between them. But since this would also imply that the flow was not maximal it is in contradiction. Thus $G$ admits a matching of size $|L|$
+\end{itemize}
+
+\item[4.]
+\begin{itemize}
+\item[(i)] In order to solve the \emph{point-to-rectangle} problem with a flow network we have to generate this flownetwork as follows. Let $G=(V,E)$ be the flow network then $V$ consists of $m$ vertices depicting the rectangles and $n$ vertices depicting each point, it ofcourse also contains 2 vertices depictingt the source ($s$) and sink ($t$). $E$ contains the following edges: every vertex depicting one of the $m$ rectangles is connected to $s$, the capacity of this edge is then the budget for that specific rectangle. Then for every point ($p_i$) that can possibly be partitioned into subset $m_j$ there exists an edge in $E$ depicing an edge between the 2 vertices representing $p_i$ and $m_j$, this edge has a capacity of 1. Then for every vertex depicting an element of $P$ there exists an edge which connects every $p_i$ to $t$, all these edges have a capacity of 1. The flownetwork depicts the network generated for the given example. \\
+
+After running \emph{Ford-Fulkerson} we can see whether or not we have found a valid partitioning by looking at the flow into the sink. If this flow is equal to the number of points (in case of the example 9) we know that every point is partitioned into exactely one rectangle (subset). If it is less then the number of points we then know that there are $h=n-f$ (where $f$ depicts the maximum flow) number of points which could not be partitioned into the subsets. Since we have a maximum flow of $n$ flowing into the sink we know that there cannot be a higher maximum flow then $n$. \\
+
+In order to then know what the outcome (partitioning) is we have to see what edges between the vertices depicting the rectangles and the vertices depicing the points are used to get to this maximum flow. For instance, if the edge between $r_2$ and $p_4$ is used in an augmenting path, then $p_4$ is partitioned into rectangle $r_2$. So by looking at every edge ``in the middle'' which are used in augmenting paths we know in what subsets every point is partitioned. In the example below the edges used to see in what rectangle which point is partitioned are colored red. All the edged with no capacity on them have a capacity of exactely 1.
+
+\includegraphics[scale=0.6]{flow4}
+
+\item[(ii)] Since we know that \emph{Edmond-Karps} has a running time of $O(|V| * |E|^2)$ and we know that we have $m+n+2$ vertices (the 2 are for the source and sink) we only need the number of vertices in order to calculate the runningtime. In order to calculate the number of edges we need to know the number of edges between the vertices depicting the rectangles and the points. Since we do not know this number we can only say something about the worst possible case. Since the only edges are from vertices depicting rooms to vertices depicting points we know that we have a maximum of $m*n$ edges between the rectangles and the points. The only other thing we need is the number of edges starting in the sink and the number of edges ending in the sink. Since the vertices depicting the rectangles receive the edges starting in the source and the sink receives the edges starting in the vertices depicting the points we know that the number of edges is equal to a maximum of $n+m+n*m$. This brings the running time in the order of $O((n+m+2)(n+m+n*m)^2)$. Luckily, this can be simplified. Since we know that in $(n+m+n*m)^2$, $n+m$ has much less influence on the running time then $n*m$ we can leave this out, since we are reasoning in worst case running times. Furthermore the 2 in $m+n+2$ can also be left out, since for big $n\text{ and }m$ this 2 does not have much influence. This brings the running time to $O((n+m)(n*m)^2)=O(n^3m^2+n^2m^3)$.
+\end{itemize}
+\end{itemize}
+
+\end{document} 

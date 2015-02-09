@@ -1,0 +1,345 @@
+\documentclass{article}
+
+\usepackage{a4wide,amsmath,marvosym,amssymb,fancyhdr,graphicx,tabularx,xspace,algorithmic,amsmath,color,dsfont}
+
+\pagestyle{fancy}
+\chead{}
+\lhead{TU Eindhoven}
+\rhead{Algorithms (2IL15) --- Homework Exercises}
+\cfoot{\thepage}
+\lfoot{}
+\rfoot{}
+
+%to include IPE/pdf correctly
+\expandafter\ifx\csname pdfoptionalwaysusepdfpagebox\endcsname\relax\else
+\pdfoptionalwaysusepdfpagebox5
+\fi
+
+%comments command
+\newcommand{\complain}[1]{\begin{quotation} {\sf *** #1 ***} \end{quotation}}
+
+
+%
+% Macros
+%
+
+
+\newcommand{\Reals}{{\Bbb R}}
+\newcommand{\Nats}{{\Bbb N}}
+\newcommand{\Ints}{{\Bbb Z}}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}}
+\newcommand{\E}{\ensuremath{\mathcal{E}}}
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+
+\newcommand{\tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\node}{\nu}
+\newcommand{\lchild}{\mathrm{lc}}
+\newcommand{\rchild}{\mathrm{rc}}
+\newcommand{\size}{\mathit{size}}
+\newcommand{\leaf}{\mu}
+\newcommand{\mylist}{{\cal L}}
+\newcommand{\myroot}{\mathit{root}}
+\newcommand{\key}{\mathit{key}}
+\newcommand{\bd}{\partial}
+
+
+
+
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+\newcommand{\pr}[1]{\Pr[#1]}
+\DeclareMathOperator{\expectation}{E}
+\newcommand{\expt}[1]{\expectation[#1]}
+\newcommand{\events}[1]{\mbox{Events}(#1)}
+\newcommand{\rank}{\mathit{rank}}
+\newcommand{\result}{\mathit{result}}
+\newcommand{\piv}{\mathrm{piv}}
+\newcommand{\myexp}{\mathrm{exp}}
+\newcommand{\best}{\mathrm{best}}
+\newcommand{\worst}{\mathrm{worst}}
+\newcommand{\dest}{\mathit{dest}}
+\newcommand{\dist}{\mathit{distance}}
+\newcommand{\weight}{\mathit{weight}}
+\newcommand{\alg}{{\sc Alg}\xspace}
+
+\newcommand{\start}{\mathit{start}}
+\newcommand{\myend}{\mathit{end}}
+\newcommand{\free}{\mathit{free}}
+
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+%%
+% Theorem-Like Environments
+%
+\newtheorem{defin}{Definition}
+  \newenvironment{mydefinition}{\begin{defin} \sl}{\end{defin}}
+\newtheorem{theo}[defin]{Theorem}
+  \newenvironment{mytheorem}{\begin{theo} \sl}{\end{theo}}
+\newtheorem{lem}[defin]{Lemma}
+  \newenvironment{mylemma}{\begin{lem} \sl}{\end{lem}}
+\newtheorem{propo}[defin]{Proposition}
+  \newenvironment{myproposition}{\begin{propo} \sl}{\end{propo}}
+\newtheorem{coro}[defin]{Corollary}
+  \newenvironment{corollary}{\begin{coro} \sl}{\end{coro}}
+%\newtheorem{obse}[defin]{Observation}
+%  \newenvironment{observation}{\begin{obse} \sl}{\end{obse}}
+%\newtheorem{rem}[defin]{Remark}
+%  \newenvironment{remark}{\begin{rem} \rm}{\end{rem}}
+
+
+\newenvironment{myproof}{\emph{Proof.}}{\hfill $\Box$ \medskip\\}
+
+\newcommand{\blb}{]}
+\newcounter{rcounter}
+\newenvironment{rlist}%
+{\begin{list}{A.1-\arabic{rcounter}}{\usecounter{rcounter}}}{\end{list}}
+\newcounter{rcountermem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{}
+\author{Mart Pluijmaekers, 0753117}
+\date{12-7-2012}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+\section*{Algorithms (2IL15): Homework Set C}
+
+\subsection*{NP-hardness}
+\begin{itemize}
+\item[1.] Yes, since we have a theorem that says: ``If an $NP$-complete problem exists that is solvable in polynomial time, then every problem in $NP$ is solvable in polynomial time and $P = NP$.'' (lecture 9, slide 23). So if we can finish hamiltonial cycle in $O(|V|^2|E|^5)$, since the most number of edges would be $E=\frac{|V|*(|V|-1)}{2}=\frac{1}{2}*|V|^2-\frac{1}{2}|V|$. This would make the running time: $O(|V|^2(2(|V|^2-|V|))^7)$. Using the normal steps of simplifying $O$ notation we get:
+
+\medskip
+\centerline{
+\begin{tabular}{@{\extracolsep{-10pt}}r l}
+$O(|V|^2(2(|V|^2-|V|))^7)$ =& $ O(|V|^2(2(|V|^2))^7) $\\
+= & $ O(|V|^2(|V|^2)^7) $ \\
+= & $ O(|V|^2|V|^{14})  $ \\
+= & $ O(|V|^{15})  $
+\end{tabular} 
+}
+\ \\
+Which is ofcourse polynomial, this would mean that we have found a polynomial-time algorithm for a problem which is NP-complete and thus P$=$NP, which would mean that using this algorithm we can also find a polynomial-time algorithm for \textsc{3-SAT}, since \textsc{3-SAT} is NP-complete.
+
+\item[2.] This can be proven with an example. We will also show that when using this example that the proposed conversion can end us up with an exponential amount of terms. Take a formula $G$ with $n$ terms, it is a ``nested-biconditional'' formula. We can create a ``nested-biconditional'' formula as follows. Let $L$ be the set of all variables of $G$,  take and remove a (the same) variable ($l$) from $L$ and say, $l \Leftrightarrow (proc(L))$ where $proc(L)$ depicts the process used. Recur until there are no variables left.\\
+
+\textbf{example:} Here is an example of using only 4 variables, let $L=\{a,b,c\}$ using the process, we will end up with the following formula $a \leftrightarrow (b \leftrightarrow (c))$, which has 3 terms. Using the conversion described this will result in the following formula $(a \vee \neg ((b \vee \neg c) \wedge (\neg b \vee c)) \wedge (\neg a \vee (b \vee \neg c) \wedge (\neg b \vee c))$ which has 10 terms. We can see that when we have 4 terms, we more then double the number of terms, since this entire formula has to be used twice (once negated, once normally) and the new term has to be used too. The recurrence is as follows. Let $n$ be the number of terms, then $l(n)$ is equal to the number of terms after the conversion.
+
+\[
+l(n)=
+\begin{cases}
+1 & \text{if n=1}\\
+2*l(n-1)+2 & \text{otherwise}
+\end{cases}
+\]
+After converting this into a formula, it becomes: $3*2^{n-1}-2$, it is obvious that this is exponential and thus will result in an exponential number of terms, since the lowerbound is 2 and $3*2^{2-1}-2=4=2^2$, so also the base case is exponential.
+
+\item[3.]
+\begin{itemize}
+\item[(i)] 
+\textbf{Claim:} \emph{Long Path} element of \textsc{NP}.\\
+\textbf{Proof:} Consider ``yes''-instance $x=(G,k)$ Let $y$ be a valid certificate, a tour in $G$ of at least $k$ edges. In order to prove \textsc{Long Path} element of \textsc{NP} we need to show that there exists a polynomial time verifier to verify that y is indeed a correct``yes''-instance. This means that it has to check in polynomial time whether or not the tour $y$ visits all nodes nd length($y)\ge k$. \\
+
+The verifier traverses the path given by $y$, keeps a counter of the number of visited edges, and for each visited vertex, adds that vertex to a set. FInally in the end it checks whether or not the number of edges in the tour depicted by $y$ indeed is $\ge k$ and that the both sets of vertices (the new one and the one depicting the vertices of the graph) are the same. It is tirivally seen that all these operations finish in polynomial time.  \\
+
+We have shown that there exists an algorithm which verifies if a certificate for the \textsc{Long Path} problem indeed a valid ``yes''-instance is and that this algorithm runs in polynomial time. Thus we have proven that the \textsc{Long Path} problem is an element of \textsc{NP}.
+\item[(ii)] We can use the 3 steps given in the slides to prove \textsc{Long Path} is \textsc{NP}-complete, but since we only need to prove NP-hardness and we know we have to use \textsc{Hamiltonian Path} we are only interested in the second step, proving that \textsc{Hamiltonian~Path}~$\le_P$~\textsc{Long~Path}. This step also consists of 3 steps.
+
+\begin{itemize}
+
+\item[i.] \textbf{Reduction algorithm:} Take a graph $G$ now remove nodes from $G until $k nodes are left connect all the cut edges together. Furthermore add a node to a different node.
+
+\item[ii.] \textbf{``yes''-, ``no''-instances:} We can now see that $G$ admits a \textsc{Long Path} of length $k$, since there are only k nodes left, iff $G$ also admits a \textsc{Hamiltonian-cycle}. If $G$ does not admit a \textsc{Long Path} it is trivially seen that there also does not exist a \textsc{Hamiltonian cycle}, because of the fact that there are only $k$ nodes left and thus a path of length $k$ is exactely the same as a \textsc{Hamiltonian-cycle}. Since \textsc{Long-Path} i about $k$ edges we have added the last node so the long path has a proper ending point preventing the possibility that the start and end nodes for the \textsc{Long-Path} are the same and thus breaking a constraint.
+
+\item[iii.] \textbf{Running time:} Since we are removing nodes (and thus also edges) we can see that we have to remove $V-k$ nodes, which is trivially seen that this completes in linear time.
+
+\end{itemize}
+\end{itemize}
+
+\item[4.]
+\begin{itemize}
+\item[(i)]\textbf{Claim:} \emph{Simple SAT} element of \emph{NP}\\
+\textbf{Proof:} Consider ``yes''-instance $x$. Let $y$ be a certificate, a valid description of a satisfying truth assignment. The verifier must then check whether or not $y$ is indeed a valid ``yes''-instance and this verifier must run in polynomial time. \\
+
+The verifier needs to check every clause, by filling in the literals of this clause. It is obvious that this filling in can be done in polynomial time, since the filling in is doable in linear time. (in terms of the number of literals) \\
+
+We have shown that there exists a polynomial time verifier which checks whether a certificate is a valid ``yes''-instance or not for the \emph{Simple SAT} problem and that this verifier has a polynomial runningtime. Thus we have proven that \emph{Simple SAT} is an element of \emph{NP}. 
+
+
+\item[(ii)] We can use the 3 steps given in the slides to prove \textsc{Simple SAT} is \textsc{NP}-completeness, but since we we only need to prove NP-hardness and we know we have to use \textsc{3-SAT} we are only interested in the second step, proving that \textsc{3-SAT}~$\le_P$~\textsc{Simple~SAT}. This step also consists of 3 steps.
+
+\begin{itemize}
+
+\item[i.] \textbf{Reduction algorithm:} For every variable $x_i$ in a \textsc{3-SAT} boolean formula $F$ which occurs more then 3 times we do the following process. Replace every occurce of $x_i$ by a new variable $x_{i,1},x_{i,2},...$ and add the following clauses. $(x_{i,1} \vee x_{i,2}) \wedge(x_{i,2} \vee x_{i,3}) \wedge ... \wedge (x_{i,k} \vee x_{i,1})$ where $k$ is the number of occurences of variable $x_i$.
+
+\item[ii.] \textbf{``yes''-, ``no''-instances:} For the transformed formula we can see that the formula always will evaluate to true, since the total formula has to be true which means all newly added clauses have to be true, which can only be the case if all $x_{i,j}$ are true or false. Because of this it simulates the effect as if only a single variable ($x_i$) was true.
+
+\item[iii.] \textbf{Running time:} For the running time it depends on how we implement the reduction. We can keep it linear by simply looping twice over all literals. In the first loop we count how many times each variable is used and in the second loop we do the conversion process. Which means that for every variable $x_i$ which appears more then 3 times in a clause we replace all instances by new variablea and add the clauses as described. Because of these 2 loops we get a running time in the order or $O(2*3*c)$ where $c$ is the number of clauses so we get a running time in the order of $O(c)$.
+
+\end{itemize}
+\end{itemize}
+
+\end{itemize}
+
+\subsection*{Approximation algorithms}
+\begin{itemize}
+\item[1.] Because of the fact that the question is ambigous we make an assumption. We assume that is ment that: Iff there exists a 2-approximation algorithm for a vertex cover, we can use the output of this algorithm directely to calculate the independent set. This is not true since in the counterexample we will state it becomes apparent that even though there is a 2 approximation for a minimal vertex cover that it does not mean that there is a maximal independent set equal to $V-D$. 
+
+\begin{figure}[h!]
+  \centering
+    \reflectbox{
+      \includegraphics[scale=0.5]{tegenvoorbeeld}}
+  \caption{Red nodes depict the vertex cover}
+\end{figure}
+We can see clearly that the left graph depicts the minimal vertex cover and thus the maximal independent set. Whil the right graph depicts a vertex cover given by an approximation algorithm. Because in this graph 6 vertices are assigned to the vertex cover and $6 \le 2 * 3$. But if we take a look at the minimal vertex cover we can see that in the left graph the size of the vertex cover is 4, while on the right graph it is equal to 1. Furthermore it is true that $1 \ngeq \frac{1}{2}*4$, so this means that we cannot directely calculate a 2-approximation maximal independent set from a 2-approximation minimal vertex cover.
+
+\item[2.]
+\begin{itemize}
+\item[(i)] No this is not true, take a formula $F$ with $c$ clauses, the literals in $F$ come from the following set of variables $\{x_1,...,x_n\}$ where $n=3*c+1$. $x_1$ is part of every clause, while all other variables appear in exactely one clause. For every formula where $c>10$ we can then see that the optimal solution is just setting $x_1$ to true since it appears in every clause. But if the algorithm does never select $x_1$ we then know that there are $c$ variables set to true and since $c>10$ we have that \textsc{Greedy-CNF}$\ge10*$\emph{OPT}(I)
+
+\newpage
+\item[(ii)] Instead of selecting a clause we will select a variable which appears in clauses the most.
+
+
+\textbf{Algorithm} \textsc{Greedy-CNF-improved}($C,X$)
+\begin{algorithmic}[1]
+\STATE{$C \gets \{C_1,C_2,...,C_m\}$ is the set of clauses, and $X = \{x_1,..,x_n\}$ is the set of
+variables.}
+\STATE{$H=\emptyset$}
+\STATE{Set $x_i\gets\FALSE$ for all $1 \le i \le n$.}
+\WHILE{$C\ne \emptyset$}
+	\STATE{Take $x_j\in (X\setminus H)$, $x_j$ appears in the most clauses.}
+	\STATE{$x_j\gets\TRUE$}
+	\STATE{$H=H\cup \{x_j\}$}
+\ENDWHILE
+\RETURN{The result of the formula}
+\end{algorithmic}
+The thing we did was change from selecting a clause, to selecting a variable which appear in the the most clauses.
+
+\textbf{Approximation proof:} $OPT(G)\ge 1$ since there has to be atleast one variable ($x_i$) which is in all the clauses, let $c$ be the number of clauses, this would mean that $x_i$ appears $c$ times, once in each clause. If we then would take a look at our most inefficient case, that is for $c$ clauses, that we have one $x_i$ which appears in every clause exactely once, if we then fill up the rest of the clauses with variables as inefficiently as possible. \\
+
+This is done as follows, create a variable $x_j$ and place it in $\frac{c}{3}$ clauses. This means that every clause get's filled up with as many of the same variables as possible. At the end if there is space left it is also filled with a single variable (but not $\frac{c}{3}$ times). Since we select a variable which appears the most times, we can select any variable which appears $c$ times. Since we know that there are at most $c*3$ variables besides $x_i$ which appear $c$ times, we know that the maximum number of variables we can set to true, without setting $x_i$ to true equal is to 3. \\
+
+Please note that it is also possible to expand this, so say we had $16*c$ clauses we could still make 16 blocks of $c$ clauses where each variable appeard $c$ times. Thus our algorithm yields a solution which is at most 3 times as bad as the optimal solution and is thus a 3-approximation, which means that it also is a 4-approximation.
+
+
+\end{itemize}
+
+\end{itemize}
+\newpage
+\subsection*{Linear programming}\begin{itemize}
+\item[1.] We have to change the following linear program to standard form.
+
+\begin{tabular}{l l}
+\textbf{Minimize} & $2x_1-5x_2-x_3$ \\
+\textbf{Subject} to & $x_1 - x_2=0$ \\
+& $2x_1-2x_2+3x_3 \ge 5$ \\
+& $x_1 \le 0$ \\
+& $x_3 \ge 0$ \\
+\end{tabular}
+
+Now we have to apply the transoformations explained in the slides in order to tranform this Linear Program into a comparable Linear Program in standard form.
+
+Switch the signs of the function which we want to minimize, so we have to maximize it and let $a-b=x_1$ and $c-d=x_2$ we then get.
+
+\begin{tabular}{l l}
+\textbf{Maximize} & $-2a+2b+5c-5d+x_3$ \\
+\textbf{Subject to} & $a-b - c+d\le0$ \\
+ & $-a+b + c-d\le0$ \\
+& $-2a+2b-2c+2d-3x_3 \le 5$ \\
+& $a-b \le 0$ \\
+& $a \ge 0$ \\
+& $b \ge 0$ \\
+& $c \ge 0$ \\
+& $d\ge 0$ \\
+& $x_3 \ge 0$ \\
+\end{tabular}
+
+Which is in standard form.
+
+\item[2.]
+\begin{itemize}
+\item[(i)] First we will describe the method of formulating the \textsc{Point-to-rectangle} problem as a 0/1-\textsc{LP}, after that we will use this method to translate the example of the exercise into a 0/1-\textsc{LP}. \\
+
+Firstly we have to define all variables, we do this as follows. For every point we make a single variable, but when a point can be partitioned into more then one rectangle, we make a variable representing this point for every rectangle (say $p_3$ can be partitioned into rectangles, $r_1,r_2,r_3$ we create 3 variables called $p_{3,r_1},p_{3,r_2},p_{3,r_3}$). For these points (which can be partitioned into multiple rectangles) we create a constraint, in this constraint all variables depicting this point are summed up and this sum is restricted to $\le1$. \\
+
+Then for every rectangle we create a constraint, where all the variables (points) are added up, and the total is $\le$ to it's budget. (e.g. $ p_j+p_k+p_l \le b(r)$, for a rectangle $r$ and points $p_j,p_k,p_l$) Lastly we need to define what we want to maximize/minimize, since this is about partitioning as many points as possible, we will try to maximize the sum of all created variables.\\
+
+\textbf{example:} Here we give an example of a \textsc{Point-to-rectangle} problem as a 0/1-\textsc{LP}, it is the same as used in exercise 4 of homeworkset \emph{B}. 
+ 
+\medskip
+\begin{tabular}{l l}
+\textbf{Maximize} & $p_{1} + p_{2} + p_{3} + p_{4,r_1} + p_{4,r_2} + p_{5,r_2} + p_{5,r_3} + p_{6,r_2} + p_{6,r_3} + p_{7} + p_{8} + p_9$ \\
+\textbf{Subject to} & $ p_1+p_2+p_{4,r_1} \le 3$ \\
+& $ p_{3}+p_{4,r_2}+p_{5,r_2}+p_{6,r_2}+p_{7}+p_{8} \le 4$ \\
+& $ p_{5,r_3}+p_{6,r_3}+p_{9} \le 2$\\
+& $ p_{4,r_1}+p_{4,r_2} \le 1 $ \\
+& $ p_{5,r_2}+p_{5,r_2} \le 1 $ \\
+& $ p_{6,r_2}+p_{6,r_3} \le 1 $ \\
+\end{tabular}
+
+
+\item[(ii)] This depends on the specific problem to compute, say the dimension is constant we would definitely use the \emph{LP} solution since that can be solved in linear time. But, since this does not always have to be the case it could be preferable to use the flow problem, since for example the \emph{Simplex} method can be exponential and \emph{interior-points} methods is usually slower then \emph{Simplex} so all in all, we would still try to use flow, as long as the dimension is not constant.
+\end{itemize}
+
+\item[3.] In order to solve this problem as an \emph{LP} we need to define some variables.
+
+\begin{itemize}
+\item Let $m$ represent the amount invested in mortages.
+\item Let $p$ represent the amount invested in personal loans.
+\item Let $c$ represent the amount invested in commercial loans.
+\item Let $g$ represent the amount invested in government securities.
+\end{itemize}
+
+We then want to get an extreme value of a function, we are maximizing profit so we will try to maximize the following function: $m*0.04+p*0.09+c*0.03+g*0.02$. \\
+
+Furthermore we have some constraints.
+
+\begin{tabular}{l l}
+\textit{Textual description} & \textit{constraint(s)} \\
+We have to invest more the \EUR150m in commercial loans & $c\ge 150,000,000$ \\
+No negative amounts, every variable has to be positive & $m \ge 0, p \ge 0,g \ge 0$ \\
+Avarage risk cannot exceed 3.1 & $\frac{3*m +5*p +2*c}{m+p+c}\le 3.1$ \\
+Not more then \EUR1B invested & $m+g+c+g \le 1,000,000,000$\\
+\end{tabular}\\
+
+Since $\frac{3*m +5*p +2*c}{m+p+c}\le 3.1$ is not linear we have to rewrite this formula. 
+
+\medskip
+\centerline{
+\begin{tabular}{@{\extracolsep{-10pt}}r l}
+$\frac{3*m +5*p +2*c}{m+p+c}\le$&$3.1$ \\
+$3*m + 5*p +2*c \le$ & $ 3.1 * (m+p+c) $\\
+$3*m + 5*p +2*c \le$ & $ 3.1 *m+3.1 *p+3.1 *c$ \\
+$-0.1*m+1.9*p-1.1*c \le$ & $ 0$
+\end{tabular}}
+\medskip
+This gives us the following \emph{LP}-problem\\
+\begin{tabular}{l l}
+\textbf{Maximize} & $0.04*m+0.09*p+0.03*c+0.02*g$ \\
+\textbf{Subject to} & $m+p+c+g\le 1,000,000,000 $\\
+ & $-0.1*m+1.9*p-1.1*c \le 0$\\
+ & $c \ \ge 150,000,000$ \\
+ & $m \ge 0$ \\
+ & $p \ \ge 0$ \\
+ & $g \ \ge 0$ \\
+\end{tabular}
+
+\end{itemize}
+
+\end{document} 

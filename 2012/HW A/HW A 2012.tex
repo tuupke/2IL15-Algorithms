@@ -1,0 +1,306 @@
+\documentclass{article}
+
+\usepackage{a4wide,amsmath,amssymb,fancyhdr,graphicx,tabularx,xspace, algorithmic,amsmath}
+
+\pagestyle{fancy}
+\chead{}
+\lhead{TU Eindhoven}
+\rhead{Algorithms (2IL15) --- Homework Exercises}
+\cfoot{\thepage}
+\lfoot{}
+\rfoot{}
+
+%to include IPE/pdf correctly
+\expandafter\ifx\csname pdfoptionalwaysusepdfpagebox\endcsname\relax\else
+\pdfoptionalwaysusepdfpagebox5
+\fi
+
+%comments command
+\newcommand{\complain}[1]{\begin{quotation} {\sf *** #1 ***} \end{quotation}}
+
+
+%
+% Macros
+%
+
+
+\newcommand{\Reals}{{\Bbb R}}
+\newcommand{\Nats}{{\Bbb N}}
+\newcommand{\Ints}{{\Bbb Z}}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}}
+\newcommand{\E}{\ensuremath{\mathcal{E}}}
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+
+\newcommand{\tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\node}{\nu}
+\newcommand{\lchild}{\mathrm{lc}}
+\newcommand{\rchild}{\mathrm{rc}}
+\newcommand{\size}{\mathit{size}}
+\newcommand{\leaf}{\mu}
+\newcommand{\mylist}{{\cal L}}
+\newcommand{\myroot}{\mathit{root}}
+\newcommand{\key}{\mathit{key}}
+\newcommand{\bd}{\partial}
+
+
+
+
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+\newcommand{\pr}[1]{\Pr[#1]}
+\DeclareMathOperator{\expectation}{E}
+\newcommand{\expt}[1]{\expectation[#1]}
+\newcommand{\events}[1]{\mbox{Events}(#1)}
+\newcommand{\rank}{\mathit{rank}}
+\newcommand{\result}{\mathit{result}}
+\newcommand{\piv}{\mathrm{piv}}
+\newcommand{\myexp}{\mathrm{exp}}
+\newcommand{\best}{\mathrm{best}}
+\newcommand{\worst}{\mathrm{worst}}
+\newcommand{\dest}{\mathit{dest}}
+\newcommand{\dist}{\mathit{distance}}
+\newcommand{\weight}{\mathit{weight}}
+\newcommand{\alg}{{\sc Alg}\xspace}
+
+\newcommand{\start}{\mathit{start}}
+\newcommand{\myend}{\mathit{end}}
+\newcommand{\free}{\mathit{free}}
+
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+%%
+% Theorem-Like Environments
+%
+\newtheorem{defin}{Definition}
+  \newenvironment{mydefinition}{\begin{defin} \sl}{\end{defin}}
+\newtheorem{theo}[defin]{Theorem}
+  \newenvironment{mytheorem}{\begin{theo} \sl}{\end{theo}}
+\newtheorem{lem}[defin]{Lemma}
+  \newenvironment{mylemma}{\begin{lem} \sl}{\end{lem}}
+\newtheorem{propo}[defin]{Proposition}
+  \newenvironment{myproposition}{\begin{propo} \sl}{\end{propo}}
+\newtheorem{coro}[defin]{Corollary}
+  \newenvironment{corollary}{\begin{coro} \sl}{\end{coro}}
+%\newtheorem{obse}[defin]{Observation}
+%  \newenvironment{observation}{\begin{obse} \sl}{\end{obse}}
+%\newtheorem{rem}[defin]{Remark}
+%  \newenvironment{remark}{\begin{rem} \rm}{\end{rem}}
+
+
+\newenvironment{myproof}{\emph{Proof.}}{\hfill $\Box$ \medskip\\}
+
+\newcounter{rcounter}
+\newenvironment{rlist}%
+{\begin{list}{A.1-\arabic{rcounter}}{\usecounter{rcounter}}}{\end{list}}
+\newcounter{rcountermem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{}
+\author{Mart Pluijmaekers}
+\date{19-11-2012}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\section*{Algorithms (2IL15): Homework Set A}
+
+\subsection*{Backtracking}
+\begin{itemize}
+\item[1.]\begin{algorithmic}[1]
+\STATE{BacktrackPermuations($X, done,working$)}
+\IF{length $done = X$}
+	\STATE{Display: $working$}
+\ENDIF
+\FOR{$i \gets 1$ to $X$}
+	\IF{$working \setminus i = working$}
+		\STATE{BacktrackPermutations($X, done \cup i, working + i$)}
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+The initial call to this algorithm is BacktrackPermuatations($n, \{\}, ""$).
+
+\item[2.] 
+\begin{itemize}
+
+\item[(a)]\begin{algorithmic}[1]
+\STATE{3Partition($total,a1,a2,a3$)}
+\IF{length $total = 0$ and $a1=a2=a3$}
+	\RETURN{\TRUE}
+\ENDIF
+\FOR{$i \gets 1$ to length $total$}
+	\STATE{Partition($total \setminus total[i], a1 \cup total[i],a2,a3$)}
+	\STATE{Partition($total \setminus total[i], a1,a2 \cup total[i],a3$)}
+	\STATE{Partition($total \setminus total[i], a1,a2,a3 \cup total[i]$)}
+\ENDFOR
+\end{algorithmic}
+
+
+\item[(b)] Because we know that all sums of the 3 partitions are equal, we know that these are exactely equal to one third of the sum of all elements. So in order to implement this we first have to compute the sum of all elements in the array. Then in the checking part we have to check whether the sum of a partition is greater then one third of the total sum and if so we know that we cannot get a valid partition anymore. This works too with negative variables, since the original statement about still holds in this case. We have to change the following parts of the pseudocode in order to implement the pruning: \begin{itemize}
+\item[(1)] Add another argument to the top of the algorithm which contains the total sum of the array.
+\item[(2)] Add a check to the top of the algorithm where we check if any of the sums in the arrays is bigger then one third of our total sum and if so return.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+\subsection*{Greedy algorithms}
+\begin{itemize}
+\item[1.] No this is not a valid greedy choice, if we take the example from the slides (lecture 2 slide 13) and say we add a stack of activities ($\ge 3$) in the void between the first and second blue activities. Then \emph{Another-Greedy-Activity-Selection-Algorithm} will not select the second red activity to be in the solution, thus making the solution of \emph{Another-Greedy-Activity-Selection-Algorithm} not optimal anymore. Thus the new greedy choice is not a valid greedy choice.
+
+\item[2.] \textbf{Lemma:}
+Let $j_i$ be a job such that it has the lowest completion time. Then there is an optimal solution to the scheduling problem for $J$ that include $j_i$.
+
+
+\textbf{Proof:} Let OPT be a optimal solution for $J$. If OPT includes $j_i$ then the lemma obviously holds, so assume OPT does not include $j_i$. We will show how to modify OPT into a solution OPT* such that:
+
+\begin{itemize}
+\item[(1)] OPT* is a valid solution
+\item[(2)] OPT* includes j$_i$
+\item[(3)] size(OPT*) $\ge$ size(OPT) 
+\end{itemize}
+
+
+Let $j_j$ be the job with the lowest completion time and let $j_i$ be the greedy choice then OPT*$=($OPT$\setminus j_j) \cup j_i$. then size(OPT*) $\ge$ size(OPT) and OPT* contains $j_i$. Since the greedy choice is to select the job with the lowest completion time the completion time of $j_i$ cannot be greater then the completion time of $j_j$.
+Thus OPT* is an optimal solution including $j_i$, and so the lemma holds.
+
+
+
+\item[3.]
+\begin{itemize}
+
+\item[(i)] \begin{algorithmic}[1]
+\STATE{GreedySchedule(D, F)}
+\STATE{$done = \{\}$}
+
+\FOR{$n \gets 1$ to length $D$}
+\STATE{$num=-1$}
+\STATE{$max=-1$}
+\FOR{$i \gets 1$ to length $D$}
+\IF{$D[i]>max$ and $i \notin done$}
+\STATE{$max=D[i]$}
+\STATE{$done = done \cup i$}
+\STATE{$num=i$}
+\ENDIF
+\ENDFOR
+\STATE{$back=0$}
+\WHILE{$S[F[num]-back]=0$ and $F[num]-back>1$}
+\STATE{$back=back-1$}
+\ENDWHILE
+\IF{$F[num]-back>1$}
+\STATE{$S[F[num]-back]=num$}
+\ENDIF
+\ENDFOR
+\RETURN{$S$}
+\end{algorithmic}
+
+\item[(ii)]
+\textbf{Lemma:}
+Let $j_i$ be a job such that it has the highest profit. Then there is an optimal solution to the scheduling problem for $J$ that include $j_i$.
+
+
+\textbf{Proof:} Let OPT be a optimal solution for $J$. If OPT includes $j_i$ then the lemma obviously holds, so assume OPT does not include $j_i$. We will show how to modify OPT into a solution OPT* such that:
+
+\begin{itemize}
+\item[(1)] OPT* is a valid solution
+\item[(2)] OPT* includes j$_i$
+\item[(3)] size(OPT*) $\ge$ size(OPT) 
+\end{itemize}
+
+
+Let $j_j$ be the job with the highest profit and let $j_i$ be the greedy choice, then OPT*$=($OPT$\setminus j_j) \cup j_i$. then size(OPT*) $\ge$ size(OPT) and OPT* contains $j_i$. Since we know that the greedy choice is to select the highest profit job first and place it as close to it's deadline (thus leaving more possible space for other jobs) we know that $j_i$ is at least as good as $j_j$.
+Thus OPT* is an optimal solution including $j_i$, and so the lemma holds.
+
+\item[(iii)]
+For the analisys of the running time we have to count the number of nested loops we have. In this case the deepest ``recursion'' is 2. Both of these loops in level 2 have different running times, the first (lines 6-12) run for the length of D while the other can potentially run for the entire length of S. The outer loop always runs has length $D$ iterations so the running time is $O(n*s)$ where $n$ is the number of elements in $D$ and $s$ the number of elements in $S$.
+
+\end{itemize}
+\end{itemize}
+
+\subsection*{Dynamic Programming}
+\begin{itemize}
+\item[1.]
+\begin{itemize}
+
+\item[(i)] Given 2 variables $i,j$ with $1\le i \le j \le n$ compute the minimal cost to create a cluster $\{x_i,..x_j\}$. $m[i,j]$ holds the optimal solution.
+
+\item[(ii)] 
+\[
+m[i,j]=
+\begin{cases}
+0, & \text{if i=j}\\
+min_{i \le k < j}(m[i,k],m[k+1,j] + pCost(X_{i,j})), & $\text{otherwise;}$
+\end{cases}
+\]
+
+HIER MOET NOG EEN BEWIJS
+\item[(iii)]
+\begin{algorithmic}[1]
+\STATE{CalcCost(Cost)}
+\FOR{$i \gets 1$ to $n$}
+	\STATE{$m[i,i]\gets 0$}
+\ENDFOR
+\FOR{$i\gets n-1$ to $1$}
+	\FOR{$j\gets i+1$ to $n $}
+		\STATE{$m[i,j] \gets \text{min}_{i\le k<j}(m[i,k],m[k+1,j])+\text{Cost}[i,j]$}
+	\ENDFOR
+\ENDFOR
+\RETURN{m[1,n]}
+\end{algorithmic}
+
+\item[(iv)] In order to analyse the running time we first need to know the running time of each part. Lines 3 and 10 run in $O(1)$. However we have got 3 loops, where on of these loops is nested in another loop. Line 7 is a loop too, since it has to select a minimal element, these nested loops all run from possibly 1 to n, so the total running time is $O(n^3)$.
+
+\item[(v)]
+\begin{algorithmic}[1]
+\STATE{CalcCost(Cost)}
+\STATE{$split\gets [][]$}
+\FOR{$i \gets 1$ to $n$}
+\STATE{$m[i,i]\gets 0$}
+\ENDFOR
+\FOR{$i\gets n-1$ to $1$}
+\FOR{$j\gets i+1$ to $n $}
+\STATE{$min= \infty$}
+\STATE{$minn = 0$}
+\FOR{$k \gets i$ to $j$}
+\IF{$\text{min}(m[i,k],m[k+1,j])+\text{Cost}[i,j]$}
+\STATE{$min\gets \text{min}(m[i,k],m[k+1,j])+\text{Cost}[i,j]$}
+\STATE{$minn\gets k$}
+\ENDIF
+\ENDFOR
+%\STATE{$m[i,j] \gets \text{min}_{i\le k<j}(m[i,k],m[k+1,j])+\text{Cost}[i,j]$}
+\ENDFOR
+\ENDFOR
+\RETURN{m[1,n]}
+\end{algorithmic}
+\end{itemize}
+
+
+\item[2.]
+\begin{itemize}
+
+\item[(i)] Given 2 variables $i,j$ with $1\le i \le j \le n$ compute the minimal cost to create a partition $\{x_i,..x_j\}$. $m[i,j]$ holds the optimal solution.
+
+\item[(ii)] 
+
+\item[(iii)]
+
+\item[(iv)]
+
+\end{itemize}
+\end{itemize}
+
+
+\end{document} 

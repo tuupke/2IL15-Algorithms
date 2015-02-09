@@ -1,0 +1,312 @@
+\documentclass{article}
+
+\usepackage{a4wide,amsmath,amssymb,fancyhdr,graphicx,tabularx,xspace, algorithmic,amsmath}
+
+\pagestyle{fancy}
+\chead{}
+\lhead{TU Eindhoven}
+\rhead{Algorithms (2IL15) --- Homework Exercises}
+\cfoot{\thepage}
+\lfoot{}
+\rfoot{}
+
+%to include IPE/pdf correctly
+\expandafter\ifx\csname pdfoptionalwaysusepdfpagebox\endcsname\relax\else
+\pdfoptionalwaysusepdfpagebox5
+\fi
+
+%comments command
+\newcommand{\complain}[1]{\begin{quotation} {\sf *** #1 ***} \end{quotation}}
+
+
+%
+% Macros
+%
+
+
+\newcommand{\Reals}{{\Bbb R}}
+\newcommand{\Nats}{{\Bbb N}}
+\newcommand{\Ints}{{\Bbb Z}}
+
+
+\newcommand{\C}{\ensuremath{\mathcal{C}}}
+\newcommand{\E}{\ensuremath{\mathcal{E}}}
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+
+\newcommand{\tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\node}{\nu}
+\newcommand{\lchild}{\mathrm{lc}}
+\newcommand{\rchild}{\mathrm{rc}}
+\newcommand{\size}{\mathit{size}}
+\newcommand{\leaf}{\mu}
+\newcommand{\mylist}{{\cal L}}
+\newcommand{\myroot}{\mathit{root}}
+\newcommand{\key}{\mathit{key}}
+\newcommand{\bd}{\partial}
+
+
+
+
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+\newcommand{\pr}[1]{\Pr[#1]}
+\DeclareMathOperator{\expectation}{E}
+\newcommand{\expt}[1]{\expectation[#1]}
+\newcommand{\events}[1]{\mbox{Events}(#1)}
+\newcommand{\rank}{\mathit{rank}}
+\newcommand{\result}{\mathit{result}}
+\newcommand{\piv}{\mathrm{piv}}
+\newcommand{\myexp}{\mathrm{exp}}
+\newcommand{\best}{\mathrm{best}}
+\newcommand{\worst}{\mathrm{worst}}
+\newcommand{\dest}{\mathit{dest}}
+\newcommand{\dist}{\mathit{distance}}
+\newcommand{\weight}{\mathit{weight}}
+\newcommand{\alg}{{\sc Alg}\xspace}
+
+\newcommand{\start}{\mathit{start}}
+\newcommand{\myend}{\mathit{end}}
+\newcommand{\free}{\mathit{free}}
+
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+%%
+% Theorem-Like Environments
+%
+\newtheorem{defin}{Definition}
+  \newenvironment{mydefinition}{\begin{defin} \sl}{\end{defin}}
+\newtheorem{theo}[defin]{Theorem}
+  \newenvironment{mytheorem}{\begin{theo} \sl}{\end{theo}}
+\newtheorem{lem}[defin]{Lemma}
+  \newenvironment{mylemma}{\begin{lem} \sl}{\end{lem}}
+\newtheorem{propo}[defin]{Proposition}
+  \newenvironment{myproposition}{\begin{propo} \sl}{\end{propo}}
+\newtheorem{coro}[defin]{Corollary}
+  \newenvironment{corollary}{\begin{coro} \sl}{\end{coro}}
+%\newtheorem{obse}[defin]{Observation}
+%  \newenvironment{observation}{\begin{obse} \sl}{\end{obse}}
+%\newtheorem{rem}[defin]{Remark}
+%  \newenvironment{remark}{\begin{rem} \rm}{\end{rem}}
+
+
+\newenvironment{myproof}{\emph{Proof.}}{\hfill $\Box$ \medskip\\}
+
+\newcounter{rcounter}
+\newenvironment{rlist}%
+{\begin{list}{A.1-\arabic{rcounter}}{\usecounter{rcounter}}}{\end{list}}
+\newcounter{rcountermem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{}
+\author{}
+\date{}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\section*{Algorithms (2IL15): Homework Set A.1}
+
+\subsection*{Exercises for Lecture 1}
+\begin{rlist}
+\item (1 point) Consider the following recurrence (which is similar to the recurrence
+      for \emph{TSP\_BruteForce1} in the Handout for Lecture~1)
+      for integers $n\geq 1$ and $m\geq 0$:
+      \[
+      T(n,m) = \left\{
+                   \begin{array}{ll}
+                     n   & \mbox{if $m=0$} \\
+                     m + m \cdot T(n+1,m-1)  & \mbox{if $m>0$}
+                   \end{array}
+                \right.
+      \]
+      Prove using induction that $T(n,m) = O((n+m)m!)$, where we define $m!=1$ for $m=0$.
+
+We have to prove this by induction, we know that he following is true: \\
+m$=0$ implies T(n,0)$=n\le c*n$ for $n\ge 1$ \\
+
+We also know that for m$=1$ it holds that: \\
+T(n,1)$=1+1*T(n+1,0)=1+1*(n+1)=n+2 \le c*n for n \ge 2$
+
+
+
+For m$\textgreater 1$ the following holds: \\
+T$(n,m)=m+m*T(n+1,m-1)$ \\
+Which according to the induction hypothesis is smaller or equal to: \\
+$d(m+m*((n+1)+(m-1))*(m-1)!)=c(m+(n+m)*m!)\le c*(n+m)*m!$
+
+Thus by induction we have proven that the recursion stated in the exercise can be written as:\\
+$T(n,m)=O((m+n)*m!)$
+
+\item (1 point)
+By adding the distance to the starting city to the left side of the inequality on line 7 because, then you also take the cost of traveling back to the original city into account. \\
+
+When line 7 is changed to the following we have taken the cost of traveling back to the original ciy into account: \textbf{if} newLength $>$ minCost +distance[A[l],A[0]] \textbf{then}\
+
+The triangle inequality is needed because we actually want to calculate the distance from A[l] to A[l+1] and A[l+1] to A[0] but because l+1 is the last element calculating these distances take a lot of time to compute but since we know that the triangle inequality holds and we know that it is atleast as big as distance[A[l],A[0]] it is good enough to only check for minCost $+$ distance[A[l],A[0]].
+
+\item (1 point) 
+\begin{algorithmic}[1]
+\STATE TSP\_BruteForce2extended(A,l,lengthSoFar,L)
+\IF{L=lengthSoFar+distance[A[0],A[l+1]]}
+\RETURN{true}
+\ELSE
+\FOR{i $\gets$ l+1 to length(A)}
+\STATE{swap A[l+1] and A[i]}
+\STATE{newLength $\gets$ lengthSoFar + dinstance[A[l], A[l+1]]}
+\IF{TSP\_BruteForce2extended(A,l+1,newLength,L)}
+\RETURN{true}
+\ENDIF
+\STATE{Swap A[l + 1] en A[i]}
+\ENDFOR
+\ENDIF
+\RETURN{false}
+\end{algorithmic}
+
+The algorithm works in the same way as \textit{TSP\_BruteForce2} except it now does not return the length but rather if there is a path with length L over a subset of the cities in A.
+
+\item ($1+\frac{1}{2}+\frac{1}{2}$ point)
+      Let $S=\{x_1,\ldots,x_{n}\}$ be a set of $n$ integers, and let $B$ be another integer.
+      The numbers from $S$ are stored in an array $S[1..n]$, so $S[i]=x_i$ for all $1\leq i \leq n$.
+      \begin{enumerate}
+      \item[(i)]
+\begin{algorithmic}[1]
+\STATE{SubSetSum(F,B)}
+\IF {B=0} 
+\RETURN{true}
+\ELSE
+\FOR{$i \gets 1$ to $n$}
+\IF{SubSetSum(F $\setminus$ F[$i$], B$-$F[$i$])}
+\RETURN{true}
+\ENDIF
+\ENDFOR
+\RETURN{false}
+\ENDIF
+\end{algorithmic}
+
+The algorithm works by iterating over every element in a set, for every iteration it substracts the value of the current selected item of the set and removes that item from the set and does a recursive call to the same method with the new parameters, since the following holds: \[
+\sum_{i=1}^5(i)=15 \]
+\[15-\sum_{i=1}^5(i)=0\]
+it is clear that whenever B$=0$ the sum of a certain subset of the values in F sum op to B.
+      \item[(ii)] \[
+m[i,j]=
+\begin{cases}
+0, &\text{if $B=0$;}\\
+n!, & \text{Otherwise} \\
+
+\end{cases}
+\]
+
+This is in the most possible worst case since then the algorithm has to use all values in F, whenever it can use less values it will be quicker then n!. Since the algorithm works by removing each processed element from the set - thus shrinking the set by one each recursive call - it takes $n*(n-1)*(n-2)*$... operations to compute and thus $n!$.
+      \item[(iii)] 
+Pruning can be very effective in this case since when B gets less then 0 it is impossible for it to be become 0 again, since all numbers are positive and thus it can only continue to shrink, so by adding a check at the beginning of the algorithm (before line 2) if B$\textless$0 and then returning false when this is the case we can speed up the algorithm.\\
+
+It is neccesary that all the numbers in F are positive because if it is allowed that F also contains negative numbers it is possible that B is negative but can still become 0 so this pruning aproach cannot be used since every number has to be checked whether or not it is possible that it sums up to 0.
+
+A simple example, let F=${1,2,3,4,5,7,-2}$ and B$=20$, then B$-\sum_{i=0}^{\text{length(F)}-1}(\text{F}[i])=-2$ so when the original pruning idea was implemented the algorithm would state that the sum of all elements in F is not equal to B, while actually it is since $-2+-2=0$
+
+      \end{enumerate}
+      \setcounter{rcountermem}{\value{rcounter}}
+\end{rlist}
+\subsection*{Exercises for Lecture 2}
+\begin{rlist}
+\setcounter{rcounter}{\value{rcountermem}}
+\item ($1\frac{1}{2}$ points)
+Lemma: \\ Let p$_{\text{i}}$ be a petrol station in P that is located closest to Eindhoven. Then there is an optimal solution to the Petrolstation-Selection Problem for P that includes p$_{\text{i}}$.
+\\ \\
+Proof: \\
+Let OPT be an optimal solution for P. If OPT includes p$_{\text{i}}$ then the lemma obviously holds, so assume OPT does not include p$_{\text{i}}$. 
+We will show how to modify OPT into a solution OPT* such that 
+\begin{enumerate}
+\item{OPT* is a valid solution}
+\item{OPT* includes p$_{\text{i}}$}
+\item{OPT* is at least as good as OPT}
+\end{enumerate}
+Thus OPT* is an optimal solution including p$_{\text{i}}$, and so the lemma holds. To modify OPT we proceed as follows. 
+
+Let p$_{\text{k}}$ be the petrol station in P closest to Eindhoven and let OPT*=(OPT $\setminus$ \{p$_{\text{k}}$\} ) $\cup$ \{p$_{\text{j}}$\}. Then OPT* includes p$_{\text{j}}$ and size(OPT*) = size(OPT).
+
+We have distance(p$_{\text{j}}$) $\leq$ distance(p$_{\text{k}}$) by definition of p$_{\text{j}}$, so if p$_{\text{j}}$ cannot be located further away in OPT $\setminus$ \{p$_{\text{k}}$\} . Hence, OPT* is a valid solution.
+
+\item ($1$ point)
+	This lemma is false, since when we try to form 18~cents then when we use the greedy choice we would select 15~cents to start with, but then to form 18 we also need 3 1~cent coins, this makes a total of 4 coins, but when we use 2 coins of 9~cent we still have the correct value (18~cents) but with fewer coins so this solution is optimal and the greedy choice is not.
+
+\item ($1+1+\frac{1}{2}$ point)
+
+      \begin{itemize}
+      \item[(i)]
+
+\begin{algorithmic}[1]
+\STATE{OptimalScheduling(D,F)}
+\STATE{n $\gets$ length(D)}
+\STATE{S $\gets$ Array of length n and only zeroes.}
+\FOR{i $\gets$ 0 to n}
+\STATE{g $\gets$ FindBiggest(F)}
+\STATE bg $\gets$ D[g]
+\WHILE{S[bg-1]$\ne$0 AND bg $\ge$ 1}
+\STATE bg $\gets$ bg -1
+\ENDWHILE
+\IF{bg $\ge$ 1}
+\STATE{S[bg-1]=g}
+\ENDIF
+\STATE F[g] $\gets$ -1
+\ENDFOR
+\RETURN{S}
+\end{algorithmic}	
+
+Pseudocode for the helper method:
+\begin{algorithmic}[1]
+\STATE FindBiggest(F)
+\STATE biggest $\gets$ 0
+\FOR{i $\gets$ 1 to length(F)}
+\IF{F[i] $\textgreater$ F[biggest]}
+\STATE biggest $\gets$ i
+\ENDIF
+\RETURN{biggest}
+\ENDFOR
+\end{algorithmic}
+
+The algorithm works by continuously selecting the job with the highest profit (greedy choice) and placing it as close to its deadline as possible, whenever its deadline is already taken, it traversers the available timeslots in reverse in order to find a free timeslot, if it finds none it is not scheduled.
+
+      \item[(ii)] 
+
+Lemma: \\ Let f$_{\text{i}}$ be a job in F with the highest profit. Then there is an optimal solution to the Job-Scheduling Problem for F that includes f$_{\text{i}}$.
+\\ \\
+Proof: \\
+Let OPT be an optimal solution for F. If OPT includes f$_{\text{i}}$ then the lemma obviously holds, so assume OPT does not include f$_{\text{i}}$. 
+We will show how to modify OPT into a solution OPT* such that 
+\begin{enumerate}
+\item{OPT* is a valid solution}
+\item{OPT* includes f$_{\text{i}}$}
+\item{OPT* is at least as good as OPT}
+\end{enumerate}
+Thus OPT* is an optimal solution including f$_{\text{i}}$, and so the lemma holds. To modify OPT we proceed as follows. 
+
+Let f$_{\text{k}}$ be the Job in F with the highest profit and let OPT*=(OPT $\setminus$ \{f$_{\text{k}}$\}) $\cup$ \{f$_{\text{j}}$\} Then OPT* includes f$_{\text{j}}$ and size(OPT*) = size(OPT).
+
+We have profit(f$_{\text{j}}$) $\leq$ profit(f$_{\text{k}}$) by definition of f$_{\text{j}}$, so if f$_{\text{j}}$ cannot worth more in OPT $\setminus$ \{f$_{\text{k}}$\} . Hence, OPT* is a valid solution.
+
+      \item[(iii)] Lets start with the running time analysis of FindBiggest. Lines 2, 4, 5 and 7 have constant running time, but line 3 gets executed n times so the running time of this algorithm is $\sum_0^n\Theta(1)=\Theta$(n). For the main algorithm lines 2, 5, 6, 8, 11, 13 and 15 have constant running time ($\Theta$(1)), line 3 is a initialization but since every element of S has to be zeroed it actually takes $\sum_0^n\Theta(1)=\Theta$(n) time, and line 4 defines a loop over n so its runningtime is $\Theta$(n). Inside this loop FindBiggest is called which has a runningtime of $\Theta$(n). The loop defined by lines 7 through 9 run for the number of already scheduled jobs, we define k as the number of already scheduled jobs, its runningtime will then become $\sum_0^k\Theta(1)=\Theta$(k)
+
+The total running time of the algorithm will then be
+ \[\sum_0^n(\sum_0^n\Theta(1)+\sum_0^k\Theta(1))=\] 
+\[\Theta(n*(n+k))=\]
+\[\Theta(n^2+n*k))=\]
+
+Since $n*k$ is at most as big as $n^2$ since $k\leq n$ the running time of our algorithm will become $\Theta(n^2)$
+      \end{itemize}
+\end{rlist}
+
+\end{document} 
